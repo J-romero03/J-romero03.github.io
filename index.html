@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joseph Romero — Mechanical Design Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1c1d1f;
+    --surface:#232427;
+    --surface-2:#2a2c30;
+    --line:#3a3d42;
+    --text:#e9e7e1;
+    --text-dim:#9b9c9e;
+    --accent:#ff6b35;
+    --accent-2:#5fa8b8;
+    --font-display:'Space Grotesk', sans-serif;
+    --font-body:'IBM Plex Sans', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    line-height:1.5;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:64px 64px;
+    background-position:-1px -1px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+  }
+  a{color:inherit;}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
+
+  .wrap{max-width:1080px; margin:0 auto; padding:0 28px;}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(28,29,31,0.88);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex; justify-content:space-between; align-items:center; height:64px;}
+  .nav-mark{font-family:var(--font-mono); font-size:13px; letter-spacing:0.08em; color:var(--accent-2);}
+  .nav-links{display:flex; gap:28px; list-style:none; font-family:var(--font-mono); font-size:13px; letter-spacing:0.03em;}
+  .nav-links a{text-decoration:none; color:var(--text-dim); transition:color .2s;}
+  .nav-links a:hover{color:var(--accent);}
+  .nav-toggle{display:none;}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:110px 0 90px; position:relative; overflow:hidden;}
+  .hero-grid{display:grid; grid-template-columns:1.3fr 1fr; gap:40px; align-items:center;}
+  .eyebrow{
+    font-family:var(--font-mono); font-size:12px; letter-spacing:0.14em; color:var(--accent);
+    text-transform:uppercase; margin-bottom:18px; display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:''; width:22px; height:1px; background:var(--accent); display:inline-block;}
+  h1{
+    font-family:var(--font-display); font-weight:700;
+    font-size:clamp(40px, 6vw, 68px); line-height:1.02; letter-spacing:-0.01em;
+    margin-bottom:20px;
+  }
+  h1 span{color:var(--accent-2);}
+  .hero-sub{font-size:18px; color:var(--text-dim); max-width:46ch; margin-bottom:34px;}
+  .hero-cta{display:flex; gap:16px; flex-wrap:wrap;}
+  .btn{
+    font-family:var(--font-mono); font-size:13px; letter-spacing:0.03em;
+    padding:13px 22px; border-radius:2px; text-decoration:none;
+    border:1px solid var(--line); transition:all .2s;
+  }
+  .btn-primary{background:var(--accent); color:#1c1d1f; border-color:var(--accent); font-weight:600;}
+  .btn-primary:hover{background:#ff7f52;}
+  .btn-ghost{color:var(--text); }
+  .btn-ghost:hover{border-color:var(--accent-2); color:var(--accent-2);}
+
+  /* cam animation */
+  .cam-box{
+    position:relative; aspect-ratio:1/1; background:var(--surface);
+    border:1px solid var(--line); border-radius:4px; overflow:hidden;
+  }
+  .cam-box::before{
+    content:'FIG. 01 — CAM–FOLLOWER, SINGLE INPUT';
+    position:absolute; top:12px; left:14px; font-family:var(--font-mono);
+    font-size:10px; letter-spacing:0.08em; color:var(--text-dim); z-index:2;
+  }
+  .cam-svg{width:100%; height:100%; display:block;}
+  #camShape{transform-origin:200px 200px; animation:spin 6s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  #followerDot{animation:none;}
+
+  /* ---------- SECTION HEADERS ---------- */
+  section{padding:70px 0;}
+  .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:40px; border-bottom:1px solid var(--line); padding-bottom:18px;}
+  .sec-num{font-family:var(--font-mono); font-size:13px; color:var(--accent);}
+  .sec-title{font-family:var(--font-display); font-size:clamp(24px,3vw,32px); font-weight:600;}
+  .sec-note{margin-left:auto; font-family:var(--font-mono); font-size:11px; color:var(--text-dim); letter-spacing:0.04em;}
+
+  /* ---------- PROJECT TITLE-BLOCK CARDS ---------- */
+  .project{
+    background:var(--surface); border:1px solid var(--line); border-radius:4px;
+    margin-bottom:28px; overflow:hidden;
+  }
+  .project-titleblock{
+    display:grid; grid-template-columns:repeat(4, 1fr);
+    border-bottom:1px solid var(--line); background:var(--surface-2);
+    font-family:var(--font-mono);
+  }
+  .tb-cell{padding:12px 16px; border-right:1px solid var(--line);}
+  .tb-cell:last-child{border-right:none;}
+  .tb-label{font-size:9px; letter-spacing:0.1em; color:var(--text-dim); text-transform:uppercase; margin-bottom:4px;}
+  .tb-value{font-size:13px; color:var(--accent-2); font-weight:500;}
+  .project-body{padding:26px 28px 28px;}
+  .project-title{font-family:var(--font-display); font-size:22px; font-weight:600; margin-bottom:4px;}
+  .project-org{font-size:13px; color:var(--text-dim); margin-bottom:18px;}
+  .project ul{list-style:none;}
+  .project li{
+    position:relative; padding-left:22px; margin-bottom:11px; font-size:14.5px; color:var(--text);
+  }
+  .project li::before{
+    content:'—'; position:absolute; left:0; color:var(--accent);
+    font-family:var(--font-mono);
+  }
+  .project li.highlight{color:var(--text); background:rgba(255,107,53,0.07); margin:0 -12px 11px; padding:6px 12px 6px 34px; border-left:2px solid var(--accent); border-radius:2px;}
+  .project li.highlight::before{left:12px;}
+  .tag-row{display:flex; flex-wrap:wrap; gap:8px; margin-top:18px;}
+  .tag{
+    font-family:var(--font-mono); font-size:11px; padding:4px 10px;
+    border:1px solid var(--line); border-radius:2px; color:var(--text-dim);
+  }
+
+  /* ---------- SKILLS AS BOM ---------- */
+  .bom{width:100%; border-collapse:collapse; font-family:var(--font-mono); font-size:13px;}
+  .bom thead th{
+    text-align:left; padding:10px 16px; border-bottom:1px solid var(--accent);
+    font-size:10px; letter-spacing:0.1em; color:var(--accent); text-transform:uppercase;
+  }
+  .bom tbody td{padding:12px 16px; border-bottom:1px solid var(--line); vertical-align:top;}
+  .bom tbody tr:hover{background:var(--surface);}
+  .bom-idx{color:var(--text-dim); width:36px;}
+  .bom-cat{color:var(--accent-2); white-space:nowrap;}
+
+  /* ---------- EDUCATION ---------- */
+  .edu-row{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    padding:20px 0; border-bottom:1px solid var(--line); gap:20px; flex-wrap:wrap;
+  }
+  .edu-row:last-child{border-bottom:none;}
+  .edu-degree{font-family:var(--font-display); font-size:19px; font-weight:600;}
+  .edu-school{color:var(--text-dim); font-size:14px; margin-top:2px;}
+  .edu-date{font-family:var(--font-mono); font-size:12px; color:var(--accent-2); white-space:nowrap;}
+
+  /* ---------- FOOTER / CONTACT ---------- */
+  footer{border-top:1px solid var(--line); padding:60px 0 40px;}
+  .contact-title{font-family:var(--font-display); font-size:clamp(28px,4vw,42px); font-weight:600; margin-bottom:18px;}
+  .contact-links{display:flex; gap:24px; flex-wrap:wrap; margin-bottom:40px;}
+  .contact-links a{font-family:var(--font-mono); font-size:14px; text-decoration:none; color:var(--accent-2); border-bottom:1px solid transparent; padding-bottom:2px; transition:border-color .2s;}
+  .contact-links a:hover{border-color:var(--accent-2);}
+  .footer-meta{font-family:var(--font-mono); font-size:11px; color:var(--text-dim); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;}
+
+  @media (max-width:760px){
+    .hero-grid{grid-template-columns:1fr;}
+    .cam-box{max-width:320px; margin:0 auto;}
+    .project-titleblock{grid-template-columns:repeat(2,1fr);}
+    .tb-cell:nth-child(2){border-right:none;}
+    .nav-links{gap:16px; font-size:11px;}
+  }
+  @media (max-width:520px){
+    .nav-links{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="nav-mark">J. ROMERO — MECH E</div>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Mechanical Design &amp; Robotics</div>
+      <h1>Joseph Romero<br>builds <span>mechanisms<br>that move.</span></h1>
+      <p class="hero-sub">Mechanical engineering student at UT Austin designing sensorized systems, competition robots, and single-input mechanisms where every motion is synchronized by design, not electronics.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#work">View Projects</a>
+        <a class="btn btn-ghost" href="#contact">Get in Touch</a>
+      </div>
+    </div>
+    <div class="cam-box">
+      <svg class="cam-svg" viewBox="0 0 400 400" aria-hidden="true">
+        <circle cx="200" cy="200" r="170" fill="none" stroke="#3a3d42" stroke-width="1" stroke-dasharray="2 6"/>
+        <g id="camShape">
+          <path d="M200,90 C260,90 300,140 290,200 C280,260 240,290 200,290 C170,290 150,260 155,220 C160,170 170,90 200,90 Z"
+                fill="none" stroke="#5fa8b8" stroke-width="2.5"/>
+          <circle cx="200" cy="200" r="5" fill="#5fa8b8"/>
+        </g>
+        <line x1="200" y1="40" x2="200" y2="360" stroke="#3a3d42" stroke-width="1"/>
+        <circle id="followerDot" cx="200" cy="40" r="7" fill="#ff6b35"/>
+        <line x1="30" y1="200" x2="370" y2="200" stroke="#3a3d42" stroke-width="1"/>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<section id="work">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <h2 class="sec-title">Selected Projects</h2>
+      <span class="sec-note">6 PROJECTS / 2023–2026</span>
+    </div>
+
+    <!-- DaVinci Car -->
+    <div class="project">
+      <div class="project-titleblock">
+        <div class="tb-cell"><div class="tb-label">Dwg No.</div><div class="tb-value">DVC-01</div></div>
+        <div class="tb-cell"><div class="tb-label">Date</div><div class="tb-value">May 2026</div></div>
+        <div class="tb-cell"><div class="tb-label">Drive</div><div class="tb-value">Single Motor</div></div>
+        <div class="tb-cell"><div class="tb-label">Type</div><div class="tb-value">Kinematic Design</div></div>
+      </div>
+      <div class="project-body">
+        <div class="project-title">3D Cam DaVinci Car</div>
+        <div class="project-org">Design Project</div>
+        <ul>
+          <li class="highlight">Engineered a single-motor drivetrain that simultaneously powered a 3D cam-follower, linear rail slide, and slider-crank mechanism — synchronizing three independent motions from one power source with no auxiliary motors</li>
+          <li>Calculated gear reduction and belt placement to precisely time wheel rotation against the cam's angular velocity, keeping every mechanism locked to the same motion profile off a single input</li>
+          <li>Performed kinematic analysis of the cam displacement profile and steering angular velocity/displacement to verify all mechanisms stayed synchronized throughout the motion cycle</li>
+        </ul>
+        <div class="tag-row">
+          <span class="tag">SolidWorks</span><span class="tag">Cam-Follower Design</span><span class="tag">Kinematic Analysis</span><span class="tag">Gear Trains</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- VEXU -->
+    <div class="project">
+      <div class="project-titleblock">
+        <div class="tb-cell"><div class="tb-label">Dwg No.</div><div class="tb-value">VEX-01</div></div>
+        <div class="tb-cell"><div class="tb-label">Date</div><div class="tb-value">Nov 2023</div></div>
+        <div class="tb-cell"><div class="tb-label">Team</div><div class="tb-value">15 Members</div></div>
+        <div class="tb-cell"><div class="tb-label">Result</div><div class="tb-value">World Champion</div></div>
+      </div>
+      <div class="project-body">
+        <div class="project-title">VEXU Mechanical Team Lead</div>
+        <div class="project-org">Robotics and Automation Society</div>
+        <ul>
+          <li>Led a 15-person mechanical subteam through 7 iterative design cycles in Onshape and SolidWorks, contributing to a VEXU AI World Championship 2025 title and an Innovate Design Award at VEXU World Championship 2025</li>
+          <li>VEXU AI World 2025 Champion, VEXU AI World 2024 Semi-Finalist — top 25 of 200+ international teams at VEXU World Championship 2025</li>
+          <li class="highlight">Engineered a modular 18-motor drivetrain with swappable motor stacks, cutting robot repair time between matches by 75%, increasing speed by 50%, and torque by 25%</li>
+        </ul>
+        <div class="tag-row">
+          <span class="tag">Onshape</span><span class="tag">SolidWorks</span><span class="tag">Team Leadership</span><span class="tag">Drivetrain Design</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tool Handle -->
+    <div class="project">
+      <div class="project-titleblock">
+        <div class="tb-cell"><div class="tb-label">Dwg No.</div><div class="tb-value">SMH-01</div></div>
+        <div class="tb-cell"><div class="tb-label">Date</div><div class="tb-value">Nov 2024</div></div>
+        <div class="tb-cell"><div class="tb-label">Cycle Time</div><div class="tb-value">7d → 6hr</div></div>
+        <div class="tb-cell"><div class="tb-label">Cost</div><div class="tb-value">−63%</div></div>
+      </div>
+      <div class="project-body">
+        <div class="project-title">Sensorized Modular Tool Handle</div>
+        <div class="project-org">Materials Embody Robots Geometrically Lab</div>
+        <ul>
+          <li>Prototyped modular tool-handle mechanisms and modeled tool-usage forces to discover optimal sensor placement and structural design</li>
+          <li>Built a real-time data collection pipeline syncing OpenCV video capture with embedded sensor output for time/force analysis, while debugging embedded I2C sensor networks (JavaScript, MicroPython) to stabilize real-time multi-sensor acquisition, Bluetooth connection, and a live UI data chart</li>
+          <li class="highlight">Cut production time per unit from 7 days to 6 hours through material/process optimization, shrinking overall project timeline from 12 months to 5 and decreasing material costs by 63%</li>
+        </ul>
+        <div class="tag-row">
+          <span class="tag">OpenCV</span><span class="tag">I2C</span><span class="tag">MicroPython</span><span class="tag">Embedded Systems</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phantom -->
+    <div class="project">
+      <div class="project-titleblock">
+        <div class="tb-cell"><div class="tb-label">Dwg No.</div><div class="tb-value">HNP-01</div></div>
+        <div class="tb-cell"><div class="tb-label">Date</div><div class="tb-value">May 2026</div></div>
+        <div class="tb-cell"><div class="tb-label">DOF</div><div class="tb-value">3 + 2</div></div>
+        <div class="tb-cell"><div class="tb-label">Budget</div><div class="tb-value">−94%</div></div>
+      </div>
+      <div class="project-body">
+        <div class="project-title">Human Head-Neck Medical Phantom</div>
+        <div class="project-org">Senior Design Project</div>
+        <ul>
+          <li>Conducted user and market research to define design requirements for a medical phantom simulating human tracheal swallowing</li>
+          <li>Engineered a 3-DOF head-neck platform with independent servo actuation, integrated with an anatomically correct 2-DOF larynx mechanism to replicate coordinated human swallowing motion</li>
+          <li>Embedded the larynx mechanism under a silicone skin patch with a piezoresistive sensor to track real-time larynx movement, validating motion accuracy against the phantom's programmed input</li>
+          <li class="highlight">Built a UI for programming custom larynx and head-neck motion profiles, driving the phantom's servo actuation to reproduce user-defined swallowing and movement sequences in real time</li>
+          <li>Cut project costs by 94% at sponsor's request while meeting all deliverables and sponsor requirements</li>
+        </ul>
+        <div class="tag-row">
+          <span class="tag">Servo Control</span><span class="tag">UI Development</span><span class="tag">Piezoresistive Sensing</span><span class="tag">Biomechanics</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shoe Sole -->
+    <div class="project">
+      <div class="project-titleblock">
+        <div class="tb-cell"><div class="tb-label">Dwg No.</div><div class="tb-value">SSS-01</div></div>
+        <div class="tb-cell"><div class="tb-label">Date</div><div class="tb-value">Mar 2025</div></div>
+        <div class="tb-cell"><div class="tb-label">Sources</div><div class="tb-value">15+ Papers</div></div>
+        <div class="tb-cell"><div class="tb-label">Print</div><div class="tb-value">SLA</div></div>
+      </div>
+      <div class="project-body">
+        <div class="project-title">Sensorized Shoe Sole</div>
+        <div class="project-org">Materials Embody Robots Geometrically Lab</div>
+        <ul>
+          <li>Characterized metamaterial unit cells via stress-strain, force-displacement, stiffness, and energy-return testing on a Shimadzu Universal Testing Machine</li>
+          <li class="highlight">Engineered and optimized a metamaterial exhibiting stiffness and energy return comparable to elite "super shoes" used by professional athletes</li>
+          <li>Fabricated prototypes via SLA 3D printing (Elegoo Saturn 4 Ultra, Carbon M1, Formlabs 3L) and embedded them with pressure sensors for real-time pressure readings</li>
+          <li>Synthesized findings from 15+ research papers on unit-cell geometry and kinesiology to guide material target specs</li>
+        </ul>
+        <div class="tag-row">
+          <span class="tag">Metamaterials</span><span class="tag">Material Testing</span><span class="tag">SLA Printing</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shoe Control -->
+    <div class="project">
+      <div class="project-titleblock">
+        <div class="tb-cell"><div class="tb-label">Dwg No.</div><div class="tb-value">SSC-01</div></div>
+        <div class="tb-cell"><div class="tb-label">Date</div><div class="tb-value">Mar 2025</div></div>
+        <div class="tb-cell"><div class="tb-label">Baseline</div><div class="tb-value">BOTA 6-Axis</div></div>
+        <div class="tb-cell"><div class="tb-label">Platform</div><div class="tb-value">T1 Booster</div></div>
+      </div>
+      <div class="project-body">
+        <div class="project-title">Sensorized Shoe for Control Systems</div>
+        <div class="project-org">Materials Embody Robots Geometrically Lab</div>
+        <ul>
+          <li>Designed a 3-axis force sensor for embedded shoe-sole integration, feeding real-time data into an ML pipeline to improve humanoid control policies</li>
+          <li>Explored extreme sole geometries (SolidWorks, Fusion360) to evaluate Unitree Go2 control model robustness under non-standard terrain/geometry conditions</li>
+          <li>Calibrated pressure sensors against a BOTA 6-Axis Force/Torque baseline, refining air-channel layout and sensor placement for ground-truth accuracy</li>
+          <li class="highlight">Custom-molded a sensor-embedded shoe sole for a T1 Booster humanoid to collect training data for simulation-based control policy development</li>
+        </ul>
+        <div class="tag-row">
+          <span class="tag">Fusion360</span><span class="tag">ML Pipelines</span><span class="tag">Force Sensing</span><span class="tag">Humanoid Robotics</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <h2 class="sec-title">Skills — Bill of Materials</h2>
+      <span class="sec-note">TOOLS &amp; PROCESSES</span>
+    </div>
+    <table class="bom">
+      <thead>
+        <tr><th class="bom-idx">#</th><th>Category</th><th>Item</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="bom-idx">01</td><td class="bom-cat">CAD / DESIGN</td><td>SolidWorks, Onshape, Fusion360</td></tr>
+        <tr><td class="bom-idx">02</td><td class="bom-cat">PROGRAMMING</td><td>Python, MicroPython, JavaScript</td></tr>
+        <tr><td class="bom-idx">03</td><td class="bom-cat">SENSING / DATA</td><td>OpenCV, I2C, piezoresistive sensors, BOTA 6-Axis Force/Torque</td></tr>
+        <tr><td class="bom-idx">04</td><td class="bom-cat">TESTING</td><td>Shimadzu Universal Testing Machine, material/mechanical characterization</td></tr>
+        <tr><td class="bom-idx">05</td><td class="bom-cat">MANUFACTURING</td><td>SLA 3D printing — Elegoo Saturn 4 Ultra, Carbon M1, Formlabs 3L</td></tr>
+        <tr><td class="bom-idx">06</td><td class="bom-cat">ANALYSIS</td><td>Kinematic analysis, gear/belt sizing, cam-profile design</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <h2 class="sec-title">Education</h2>
+    </div>
+    <div class="edu-row">
+      <div>
+        <div class="edu-degree">Master of Science, Mechanical Engineering</div>
+        <div class="edu-school">The University of Texas at Austin</div>
+      </div>
+      <div class="edu-date">May 2027</div>
+    </div>
+    <div class="edu-row">
+      <div>
+        <div class="edu-degree">Bachelor of Science, Mechanical Engineering</div>
+        <div class="edu-school">The University of Texas at Austin — Elements of Computing Certificate</div>
+      </div>
+      <div class="edu-date">May 2026</div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="contact-title">Let's build something.</div>
+    <div class="contact-links">
+      <a href="mailto:joseph.aromero03@gmail.com">joseph.aromero03@gmail.com</a>
+      <a href="https://www.linkedin.com/in/joseph-romero-75a751253" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+    <div class="footer-meta">
+      <span>JOSEPH ANDREW ROMERO</span>
+      <span>REV. 2026</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Follower dot traces the cam profile radius as it rotates, echoing the DaVinci car concept
+  const cam = document.getElementById('camShape');
+  const dot = document.getElementById('followerDot');
+  const cx = 200, cy = 200;
+  function animateFollower(){
+    const now = performance.now() / 1000;
+    const angle = (now / 6) * 2 * Math.PI; // matches 6s rotation
+    // approximate cam radius variation
+    const r = 110 + 50 * Math.sin(angle * 2 + 0.6);
+    dot.setAttribute('cx', cx);
+    dot.setAttribute('cy', (cy - r).toFixed(1));
+    requestAnimationFrame(animateFollower);
+  }
+  if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    requestAnimationFrame(animateFollower);
+  }
+</script>
+
+</body>
+</html>
