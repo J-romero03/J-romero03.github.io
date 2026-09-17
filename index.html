@@ -87,11 +87,6 @@
     position:relative; aspect-ratio:1/1; background:var(--surface);
     border:1px solid var(--line); border-radius:4px; overflow:hidden;
   }
-  .fig-box::before{
-    content:'FIG. 01 — ELECTROMECHANICAL SYSTEM';
-    position:absolute; top:12px; left:14px; font-family:var(--font-mono);
-    font-size:10px; letter-spacing:0.08em; color:var(--text-dim); z-index:2;
-  }
   .fig-svg{width:100%; height:100%; display:block;}
   .gear-a{transform-origin:148px 152px; animation:spin-cw 16s linear infinite;}
   .gear-b{transform-origin:254px 208px; animation:spin-ccw 10.7s linear infinite;}
@@ -333,7 +328,6 @@
 
         <!-- baseline / datum -->
         <line x1="30" y1="330" x2="370" y2="330" stroke="#3a3d42" stroke-width="1" stroke-dasharray="3 7"/>
-        <text x="30" y="352" font-family="IBM Plex Mono, monospace" font-size="9" fill="#9b9c9e" letter-spacing="1.4">GEAR TRAIN + EMBEDDED CONTROL</text>
       </svg>
     </div>
   </div>
